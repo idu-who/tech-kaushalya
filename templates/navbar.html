@@ -1,0 +1,49 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="{% url 'home' %}">
+    <img src="{% static 'images/tk-logo.png' %}" alt="tk logo" height="54.5" width="44.5" class="mr-2">
+    Tech Kaushalya
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+            <span class="nav-link dropdown-toggle" id="navbarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Schedule
+            </span>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="#">Day 1</a>
+                <a class="dropdown-item" href="#">Day 2</a>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Feedback</a>
+        </li>
+    </ul>
+  </div>
+</nav>
+<script id="navbar_script" type="text/javascript">
+    // highlighting current url as active in navbar
+    document.addEventListener('DOMContentLoaded', (event) => {
+        let active_path = window.location.pathname;
+        // clearing active nav-items
+        let nav_items = document.querySelectorAll('.navbar>.navbar-collapse .nav-item');
+        for (nav_item of nav_items) {
+            nav_item.classList.remove('active');
+            if (nav_item.classList.contains('dropdown')) {
+                let nav_item_dropdown_items = nav_item.querySelectorAll('.dropdown-menu>.dropdown-item');
+                for (dropdown_item of nav_item_dropdown_items) {
+                    dropdown_item.classList.remove('active');
+                }
+            }
+        }
+        // highlighting the nav-item
+        let curr_nav_item = document.querySelector(`.navbar>.navbar-collapse .nav-link[href='${active_path}']`)
+        if (curr_nav_item) {
+            curr_nav_item.classList.add('active');
+        }
+    });
+</script>

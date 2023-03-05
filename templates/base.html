@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+        {% block title %}{% endblock title %}
+    </title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap-icons.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato&family=Open+Sans">
+    <style>
+        * {
+            font-family: 'Lato', sans-serif;
+        }
+        {% block style %}{% endblock style %}
+    </style>
+
+    <script src="{% static 'js/jquery-3.2.1.min.js' %}" charset="utf-8" defer></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}" charset="utf-8" defer></script>
+
+</head>
+<body>
+    {% block nav %}
+        {% include 'navbar.html' %}
+    {% endblock nav %}
+    {% block message %}
+        {% for message in messages %}
+        <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+            {{message}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" >
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %}
+    {% endblock message %}
+    {% block content %}{% endblock content %}
+    {% block footer %}
+        {% comment %} {% include 'footer.html' %} {% endcomment %}
+    {% endblock footer %}
+    <script type="text/javascript">
+        {% block script %}{% endblock script %}
+    </script>
+</body>
+
+</html>
