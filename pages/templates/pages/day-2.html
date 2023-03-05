@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Technical Events -->
+<div>
+    <div class="m-2">
+        <h1 style="text-align:center;"> Technical Events of the Day </h1>
+        <hr style="width:40%; border:2px solid grey"/>
+    </div>
+    
+    <div class="row m-4 justify-content-center">
+        <div class="col-lg-4 col-sm-12 col-md-4">
+            <div class="card m-3" style="width: 22rem;">
+                <img src="{% static 'images/database.jpeg' %}" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title">Query Relay</h5>
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                  <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-lg-4 col-sm-12 col-md-4">
+            <div class="card m-3" style="width: 22rem;">
+                <img src="{% static 'images/coding.jpg' %}" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title">Blind Coding</h5>
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                  <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-lg-4 col-sm-12 col-md-4">
+            <div class="card m-3" style="width: 22rem;">
+                <img src="{% static 'images/web.jpg' %}" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title">Web-O-Mania</h5>
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                  <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+
+<!-- Non-Technical Events -->
+<div>
+    <div class="m-2">
+        <h1 style="text-align:center;"> Non-Technical Events of the Day </h1>
+        <hr style="width:40%; border:2px solid grey"/>
+    </div>
+    
+    <div class="row m-4 justify-content-center">
+        <div class="col-lg-4 col-sm-12 col-md-4">
+            <div class="card m-3" style="width: 22rem;">
+                <img src="{% static 'images/gully-cricket.gif' %}" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title">Football</h5>
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                  <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-lg-4 col-sm-12 col-md-4">
+            <div class="card m-3" style="width: 22rem;">
+                <img src="{% static 'images/tugofwar.jpg' %}" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title">Tug of War</h5>
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                  <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-lg-4 col-sm-12 col-md-4">
+            <div class="card m-3" style="width: 22rem;">
+                <img src="{% static 'images/beg.jpg' %}" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title">Beg Borrow Steal</h5>
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                  <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+
+<!-- Funzone -->
+
+{% comment %} <div>
+    <div class="m-2">
+        <h1 style="text-align:center;"> Funzone </h1>
+        <hr style="width:40%; border:2px solid grey"/>
+    </div>
+</div> {% endcomment %}
+
+
+
+{% endblock content %}

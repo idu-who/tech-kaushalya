@@ -19,5 +19,7 @@ import pages.views as pages_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', pages_views.home_view, name='home')
+    path('', pages_views.home_view, name='home'),
+    path('day1_schedule', pages_views.day1_schedule_view, name='day1_schedule'),
+    path('day2_schedule', pages_views.day2_schedule_view, name='day2_schedule')
 ]
