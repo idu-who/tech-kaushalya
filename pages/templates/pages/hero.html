@@ -1,0 +1,34 @@
+{% load static %}
+<style id="hero-style">
+    #hero-wrapper {
+        height: 60vh;
+        max-height: 500px;
+        background: url({% static 'images/tech-bg-2.jpg' %}) center no-repeat fixed border-box;
+        background-size: cover;
+        box-shadow: inset 0px 0px 300px black;
+    }
+    #hero-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
+    @media (max-width: 768px){
+        #hero-wrapper {
+            height: auto;
+            max-height: none
+        }
+        #hero-inner {
+            flex-direction: column;
+        }
+    }
+</style>
+<div id="hero-wrapper" class="d-flex align-items-center p-3">
+    <div id="hero-inner" class="w-100 text-light">
+        <img src="{% static 'images/gu-logo.png' %}" alt="gujarat university logo" class="mr-2" style="height: 110px;">
+        <div class="text-center mt-3 mb-3">
+            <h1 class="display-3"><span class="text-primary">T</span>ech <span class="text-primary">K</span>aushalya</h1>
+            <h4>Department of Computer Science, Gujarat University</h4>
+        </div>
+        <img src="{% static 'images/cs-dept-logo.png' %}" alt="computer science department logo" class="ml-2" style="height: 100px;">
+    </div>
+</div>
