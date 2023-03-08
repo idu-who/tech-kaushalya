@@ -33,32 +33,32 @@
 <hr class="m-3">
 <div class="container text-center">
     <section id="events" class="mb-4">
-        <h3 class="mb-3">Check out the event schedules!</h3>
-        <div class="row justify-content-around">
+        <h2 class="mb-3">Check out the event schedules!</h2>
+        <div class="row justify-content-center">
             <div class="col-md-6 col-lg-4 mb-2">
-                <div class="card border border-secondary h-100">
+                <div class="card border-secondary h-100">
                     <div class="card-body d-flex flex-column justify-content-between">
-                        <h3 class="card-title">Day 1 - Monday, 20th March</h3>
-                        <a href="{% url 'day1_schedule' %}" class="btn btn-primary">Check Schedule</a>
+                        <h4 class="card-title">Day 1 - Monday, 20th March</h3>
+                        <a href="{% url 'day1' %}" class="btn btn-primary">Check Schedule</a>
                     </div>
                 </div>
             </div>
             <div class="col-md-6 col-lg-4 mb-2">
-                <div class="card border border-secondary h-100">
+                <div class="card border-secondary h-100">
                     <div class="card-body d-flex flex-column justify-content-between">
-                        <h3 class="card-title">Day 2 - Tuesday, 21st March</h3>
-                        <a href="{% url 'day2_schedule' %}" class="btn btn-primary">Check Schedule</a>
+                        <h4 class="card-title">Day 2 - Tuesday, 21st March</h3>
+                        <a href="{% url 'day2' %}" class="btn btn-primary">Check Schedule</a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
     <section id="sponsors" class="mb-4">
-        <h3 class="mb-3">
+        <h2 class="mb-3">
             Sponsored by
             <br>
             <small class="h6 text-danger">sponsors show below are only for reference.</small>
-        </h3>
+        </h2>
         <div class="row justify-content-between">
             <div class="col-xs-12 col-md-3 mb-2">
                 <img src="{% static 'images/sponsor_logos/apple.png' %}" style="height: 100px; width: 100px;">
@@ -72,7 +72,7 @@
         </div>
     </section>
     <section id="tk-2020" class="mb-5">
-        <h3 class="mb-3">Memories from Tech Kaushalya 2020!</h3>
+        <h2 class="mb-3">Memories from Tech Kaushalya 2020!</h2>
         <div class="row slider">
             <img src="{% static 'images/tk_2020_pics/carousel-1.jpeg' %}" class="col-sm-12 col-md-6 col-lg-3 p-2">
             <img src="{% static 'images/tk_2020_pics/carousel-2.jpeg' %}" class="col-sm-12 col-md-6 col-lg-3 p-2">
@@ -85,7 +85,7 @@
         </div>
     </section>
     <section id="organizers">
-        <h3 class="mb-3">Meet the Organizers!</h3>
+        <h2 class="mb-3">Meet the Organizers!</h2>
         <div class="row align-items-center justify-content-center">
             <div class="col-sm-6 col-lg-3 py-2">
                 <img src="{% static 'images/organizers/portrait-1.jpg' %}" class="portrait-img border border-secondary rounded-circle">
@@ -122,6 +122,7 @@
         </div>
     </section>
 </div>
+<hr class="m-3">
 {% endblock content %}
 {% block script %}
     {{ block.super }}

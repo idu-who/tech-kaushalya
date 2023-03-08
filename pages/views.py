@@ -11,7 +11,7 @@ def home_view(request):
     return render(request, 'pages/home.html', context)
 
 
-def day1_schedule_view(request):
+def day1_view(request):
     context = {}
     # if request.GET:
     #     pass
@@ -20,7 +20,7 @@ def day1_schedule_view(request):
     return render(request, 'pages/day-1.html', context)
 
 
-def day2_schedule_view(request):
+def day2_view(request):
     context = {}
     # if request.GET:
     #     pass

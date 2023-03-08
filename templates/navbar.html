@@ -2,7 +2,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="{% url 'home' %}">
     <img src="{% static 'images/tk-logo.png' %}" alt="tk logo" height="54.5" width="44.5" class="mr-2">
-    Tech Kaushalya
+    <span class="h4 m-0 align-middle"><span class="text-primary">T</span>ech <span class="text-primary">K</span>aushalya</span>
   </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -15,8 +15,8 @@
                 Schedule
             </span>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Day 1</a>
-                <a class="dropdown-item" href="#">Day 2</a>
+                <a class="dropdown-item" href="{% url 'day1' %}">Day 1</a>
+                <a class="dropdown-item" href="{% url 'day2' %}">Day 2</a>
             </div>
         </li>
         <li class="nav-item">

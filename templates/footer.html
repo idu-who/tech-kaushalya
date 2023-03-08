@@ -28,37 +28,39 @@
 <footer class="footer bg-dark text-light mt-4">
     <div class="container py-4">
         <div class="row">
-            <div class="col-md-12 col-lg-6 px-3 mb-3 mb-lg-0">
+            <div class="col-md-12 col-lg-6 px-3 mb-3 mb-lg-0 d-flex flex-column justify-content-between">
                 <form id="updates-form" method="post">
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="email-input" class="h4">Stay updated</label>
                         <div class="input-group">
-                            <input id="email-input" name="email" type="email" class="form-control" placeholder="Enter email.." required>
+                            <input id="email-input" name="email" type="email" class="form-control" placeholder="Enter email…" required>
                             <div class="input-group-append">
                                 <input type="submit" class="btn btn-primary" value="Sign Up"/>
                             </div>
                         </div>
                     </div>
                 </form>
-                <h4>Follow us</h4>
-                <div class="d-flex align-items-center justify-content-around">
-                    <a href="//www.facebook.com/people/tech_kaushalya_2k23/100090376245747/" class="text-primary" style="font-size: 2rem;">
-                        <i class="bi-facebook"></i>
-                    </a>
-                    <a href="//www.instagram.com/tech_kaushalya2k23/" class="text-primary" style="font-size: 2rem;">
-                        <i class="bi-instagram"></i>
-                    </a>
-                    <a href="//twitter.com/kaushalya_2k23" class="text-primary" style="font-size: 2rem;">
-                        <i class="bi-twitter"></i>
-                    </a>
-                    <a href="//www.linkedin.com/groups/9310590/" class="text-primary" style="font-size: 2rem;">
-                        <i class="bi-linkedin"></i>
-                    </a>
+                <div>
+                    <h4>Follow us</h4>
+                    <div class="d-flex align-items-center justify-content-around">
+                        <a href="//www.facebook.com/people/tech_kaushalya_2k23/100090376245747/" class="text-primary" style="font-size: 2rem;">
+                            <i class="bi-facebook"></i>
+                        </a>
+                        <a href="//www.instagram.com/tech_kaushalya2k23/" class="text-primary" style="font-size: 2rem;">
+                            <i class="bi-instagram"></i>
+                        </a>
+                        <a href="//twitter.com/kaushalya_2k23" class="text-primary" style="font-size: 2rem;">
+                            <i class="bi-twitter"></i>
+                        </a>
+                        <a href="//www.linkedin.com/groups/9310590/" class="text-primary" style="font-size: 2rem;">
+                            <i class="bi-linkedin"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="col-md-12 col-lg-6 px-3">
-                <iframe class="border border-primary rounded w-100" style="height: 200px; border-width: 2px !important;" frameborder="0" referrerpolicy="no-referrer-when-downgrade"
+                <iframe class="border border-primary rounded w-100" style="height: 200px; border-width: 3px !important;" frameborder="0" referrerpolicy="no-referrer-when-downgrade"
                     src="https://www.google.com/maps/embed/v1/place?key=AIzaSyC6ybgnfboezwslrjf1sxUO8r7XmQkzunQ&q=Rollwala+Computer+Center,Gujarat+India&maptype=satellite&zoom=18"
                     allowfullscreen>
                 </iframe>
