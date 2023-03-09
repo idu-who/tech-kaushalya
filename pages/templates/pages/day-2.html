@@ -17,6 +17,10 @@
     }
 {% endblock style %}
 
+{% block message %}
+    {% include 'messages_modal.html' %}
+{% endblock message %}
+
 {% block content %}
 {% include 'pages/hero.html' %}
 <hr class="m-3">
@@ -26,7 +30,7 @@
         <div class="row px-3">
             <div class="col-12 col-md-4 mb-2">
                 <div class="card justify-content-between border-secondary h-100">
-                    <div id="event_img_txt_wrapper" class="position-relative">
+                    <div id="event-card-top-wrapper" class="position-relative">
                         <img src="{% static 'images/events/d2-tech-quickrelay.jpeg' %}" class="card-img-top" style="filter: brightness(40%);">
                         <h3 class="overlay-text position-absolute text-light">Quick Relay</h3>
                     </div>
@@ -37,7 +41,7 @@
             </div>
             <div class="col-12 col-md-4 mb-2">
                 <div class="card justify-content-between border-secondary h-100">
-                    <div id="event_img_txt_wrapper" class="position-relative">
+                    <div id="event-card-top-wrapper" class="position-relative">
                         <img src="{% static 'images/events/d2-tech-blindcoding.jpg' %}" class="card-img-top" style="filter: brightness(40%);">
                         <h3 class="overlay-text position-absolute text-light">Blind Coding</h3>
                     </div>
@@ -48,7 +52,7 @@
             </div>
             <div class="col-12 col-md-4 mb-2">
                 <div class="card justify-content-between border-secondary h-100">
-                    <div id="event_img_txt_wrapper" class="position-relative">
+                    <div id="event-card-top-wrapper" class="position-relative">
                         <img src="{% static 'images/events/d2-tech-webomania.jpg' %}" class="card-img-top" style="filter: brightness(40%);">
                         <h3 class="overlay-text position-absolute text-light">Web-O-Mania</h3>
                     </div>
@@ -64,7 +68,7 @@
         <div class="row px-3">
             <div class="col-12 col-md-4 mb-2">
                 <div class="card justify-content-between border-secondary h-100">
-                    <div id="event_img_txt_wrapper" class="position-relative">
+                    <div id="event-card-top-wrapper" class="position-relative">
                         <img src="{% static 'images/events/d2-nontech-football.jpg' %}" class="card-img-top" style="filter: brightness(40%);">
                         <h3 class="overlay-text position-absolute text-light">Football</h3>
                     </div>
@@ -75,7 +79,7 @@
             </div>
             <div class="col-12 col-md-4 mb-2">
                 <div class="card justify-content-between border-secondary h-100">
-                    <div id="event_img_txt_wrapper" class="position-relative">
+                    <div id="event-card-top-wrapper" class="position-relative">
                         <img src="{% static 'images/events/d2-nontech-tugofwar.jpg' %}" class="card-img-top" style="filter: brightness(40%);">
                         <h3 class="overlay-text position-absolute text-light">Tug of War</h3>
                     </div>
@@ -86,7 +90,7 @@
             </div>
             <div class="col-12 col-md-4 mb-2">
                 <div class="card justify-content-between border-secondary h-100">
-                    <div id="event_img_txt_wrapper" class="position-relative">
+                    <div id="event-card-top-wrapper" class="position-relative">
                         <img src="{% static 'images/events/d2-nontech-begborrowsteal.jpg' %}" class="card-img-top" style="filter: brightness(40%);">
                         <h3 class="overlay-text position-absolute text-light">Beg, Borrow & Steal</h3>
                     </div>

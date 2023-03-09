@@ -17,6 +17,10 @@
     }
 {% endblock style %}
 
+{% block message %}
+    {% include 'messages_modal.html' %}
+{% endblock message %}
+
 {% block content %}
 {% include 'pages/hero.html' %}
 <hr class="m-3">
@@ -26,7 +30,7 @@
         <div class="row px-3">
             <div class="col-12 col-md-4 mb-2">
                 <div class="card justify-content-between border-secondary h-100">
-                    <div id="event_img_txt_wrapper" class="position-relative">
+                    <div id="event-card-top-wrapper" class="position-relative">
                         <img src="{% static 'images/events/d1-tech-quizcombat.jpg' %}" class="card-img-top" style="filter: brightness(40%);">
                         <h3 class="overlay-text position-absolute text-light">Quiz Combat</h3>
                     </div>
@@ -37,7 +41,7 @@
             </div>
             <div class="col-12 col-md-4 mb-2">
                 <div class="card justify-content-between border-secondary h-100">
-                    <div id="event_img_txt_wrapper" class="position-relative">
+                    <div id="event-card-top-wrapper" class="position-relative">
                         <img src="{% static 'images/events/d1-tech-cipherking.jpg' %}" class="card-img-top" style="filter: brightness(40%);">
                         <h3 class="overlay-text position-absolute text-light">Cipher King</h3>
                     </div>
@@ -48,7 +52,7 @@
             </div>
             <div class="col-12 col-md-4 mb-2">
                 <div class="card justify-content-between border-secondary h-100">
-                    <div id="event_img_txt_wrapper" class="position-relative">
+                    <div id="event-card-top-wrapper" class="position-relative">
                         <img src="{% static 'images/events/d1-tech-interpreter.jpg' %}" class="card-img-top" style="filter: brightness(40%);">
                         <h3 class="overlay-text position-absolute text-light">Interpreter</h3>
                     </div>
@@ -64,7 +68,7 @@
         <div class="row px-3">
             <div class="col-12 col-md-4 mb-2">
                 <div class="card justify-content-between border-secondary h-100">
-                    <div id="event_img_txt_wrapper" class="position-relative">
+                    <div id="event-card-top-wrapper" class="position-relative">
                         <img src="{% static 'images/events/d1-nontech-gullycricket.jpg' %}" class="card-img-top" style="filter: brightness(40%);">
                         <h3 class="overlay-text position-absolute text-light">Gully Cricket</h3>
                     </div>
@@ -75,7 +79,7 @@
             </div>
             <div class="col-12 col-md-4 mb-2">
                 <div class="card justify-content-between border-secondary h-100">
-                    <div id="event_img_txt_wrapper" class="position-relative">
+                    <div id="event-card-top-wrapper" class="position-relative">
                         <img src="{% static 'images/events/d1-nontech-badminton.jpg' %}" class="card-img-top" style="filter: brightness(40%);">
                         <h3 class="overlay-text position-absolute text-light">Badminton</h3>
                     </div>
@@ -86,7 +90,7 @@
             </div>
             <div class="col-12 col-md-4 mb-2">
                 <div class="card justify-content-between border-secondary h-100">
-                    <div id="event_img_txt_wrapper" class="position-relative">
+                    <div id="event-card-top-wrapper" class="position-relative">
                         <img src="{% static 'images/events/d1-nontech-ps4.jpg' %}" class="card-img-top" style="filter: brightness(40%);">
                         <h3 class="overlay-text position-absolute text-light">PS4 Games</h3>
                     </div>

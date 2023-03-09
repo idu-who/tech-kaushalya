@@ -1,4 +1,11 @@
 {% load static %}
+<style id="navbar-style">
+    /* changing nav active color to primary */
+    .navbar-light .navbar-nav .active > .nav-link, .navbar-light .navbar-nav .nav-link.active, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .show > .nav-link {
+        color: var(--primary);
+        opacity: .9
+    }
+</style>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="{% url 'home' %}">
     <img src="{% static 'images/tk-logo.png' %}" alt="tk logo" height="54.5" width="44.5" class="mr-2">
@@ -25,25 +32,32 @@
     </ul>
   </div>
 </nav>
-<script id="navbar_script" type="text/javascript">
-    // highlighting current url as active in navbar
+<script id="navbar-script" type="text/javascript">
+    // highlighting current url as active in navbar and dropdown
     document.addEventListener('DOMContentLoaded', (event) => {
         let active_path = window.location.pathname;
-        // clearing active nav-items
         let nav_items = document.querySelectorAll('.navbar>.navbar-collapse .nav-item');
         for (nav_item of nav_items) {
-            nav_item.classList.remove('active');
+            // clearing active dropdown-items
             if (nav_item.classList.contains('dropdown')) {
                 let nav_item_dropdown_items = nav_item.querySelectorAll('.dropdown-menu>.dropdown-item');
                 for (dropdown_item of nav_item_dropdown_items) {
                     dropdown_item.classList.remove('active');
                 }
             }
-        }
-        // highlighting the nav-item
-        let curr_nav_item = document.querySelector(`.navbar>.navbar-collapse .nav-link[href='${active_path}']`)
-        if (curr_nav_item) {
-            curr_nav_item.classList.add('active');
+            // finding nav-item with active_path and setting nav-item as active
+            // clearing other active nav-items
+            let link_element = nav_item.querySelector(`[href="${active_path}"]`);
+            console.log(link_element);
+            if (link_element) {
+                nav_item.classList.add('active');
+                if (link_element.classList.contains('dropdown-item')) {
+                    link_element.classList.add('active');
+                }
+            }
+            else {
+                nav_item.classList.remove('active');
+            }
         }
     });
 </script>

@@ -5,9 +5,6 @@ from django.shortcuts import render
 
 def home_view(request):
     context = {}
-    if request.POST:
-        email_input = request.POST.get('email')
-        print('signed up for updates:', email_input)
     return render(request, 'pages/home.html', context)
 
 
