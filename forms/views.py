@@ -1,5 +1,14 @@
 from django.contrib import messages
+from django.core.exceptions import ValidationError
 from django.shortcuts import render, redirect
+
+from .models import (
+    Updates_mail_list,
+    # Event,
+    # Team,
+    # Member,
+    # Payment
+)
 
 # Create your views here.
 
@@ -8,21 +17,28 @@ def updates_submit_view(request):
     referer_url = request.META.get('HTTP_REFERER')
 
     if request.POST:
-        email_input = request.POST.get('email')
+        email_input = request.POST.get('email').strip()
         try:
-            # register email for updates and handle errors
+            updates_email = Updates_mail_list(email=email_input)
+            updates_email.full_clean()
+            updates_email.save()
             messages.success(request, 'Signed up to receive updates '
                              'successfully.')
-            # raise Exception('Invalid email.')
-        except Exception as e:
-            messages.error(request, e)
+        except ValidationError as e:
+            if hasattr(e, 'error_dict'):
+                for error_list in e.message_dict.values():
+                    for error in error_list:
+                        messages.error(request, error)
+            else:
+                messages.error(request, e)
         return redirect(referer_url)
 
     return redirect('home')
 
 
-def register_view(request, event):
-    if request.GET:
-        context = {}
-        template_name = 'forms/individual_form.html'
-        render(request, template_name, context)
+def register_view(request, event_name):
+    context = {}
+    template_name = 'forms/individual_form.html'  # 'forms/team_form.html'
+    if request.POST:
+        pass
+    return render(request, template_name, context)
