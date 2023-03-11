@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Tech Kaushalya | Day 1 Events{% endblock title %}
+{% block title %}Tech Kaushalya | Day {{ day }} Schedule{% endblock title %}
 
 {% block style %}
     {{ block.super }}
@@ -42,14 +42,23 @@
                             Registration Fee: {{ event.registration_fee }}
                             <br>
                             {% if event.is_team_event %}
-                            Team: {{ event.min_team_members }} - {{ event.max_team_members }}
+                                Team of
+                                {% if event.min_team_members == event.max_team_members %}
+                                    {{ event.min_team_members }}
+                                {% else %}
+                                    {{ event.min_team_members }} - {{ event.max_team_members }}
+                                {% endif %}
                             {% else %}
-                            Individual
+                                Individual
                             {% endif %}
                         </p>
-                        <a href="{% url 'register' event.event_name|slugify %}" class="btn btn-outline-primary w-100">Register</a>
+                        <a href="{% url 'register' event.id %}" class="btn btn-outline-primary w-100">Register</a>
                     </div>
                 </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <h4 class="text-warning">No events found.</h4>
             </div>
             {% endfor %}
         </div>
@@ -71,14 +80,23 @@
                             Registration Fee: {{ event.registration_fee }}
                             <br>
                             {% if event.is_team_event %}
-                            Team: {{ event.min_team_members }} - {{ event.max_team_members }}
+                                Team of
+                                {% if event.min_team_members == event.max_team_members %}
+                                    {{ event.min_team_members }}
+                                {% else %}
+                                    {{ event.min_team_members }} - {{ event.max_team_members }}
+                                {% endif %}
                             {% else %}
-                            Individual
+                                Individual
                             {% endif %}
                         </p>
-                        <a href="{% url 'register' event.event_name|slugify %}" class="btn btn-outline-primary w-100">Register</a>
+                        <a href="{% url 'register' event.id %}" class="btn btn-outline-primary w-100">Register</a>
                     </div>
                 </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <h4 class="text-warning">No events found.</h4>
             </div>
             {% endfor %}
         </div>

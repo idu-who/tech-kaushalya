@@ -1,0 +1,89 @@
+{% extends 'forms/base_form.html' %}
+
+{% block title %}Tech Kaushalya | Registration{% endblock title %}
+
+{% block form_title %}
+{{ event.event_name|title }} Registration
+{% endblock form_title %}
+
+{% block form %}
+<form id="registration-form" method="post">
+    <div class="modal fade" id="cancel-modal" tabindex="-1" role="dialog" aria-labelledby="cancel-modal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirm Cancelation</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to cancel registration?
+                    <br>
+                    All data will be lost.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-danger" value="Cancel" name="cancel"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script id="cancel-modal-script" type="text/javascript">
+        document.addEventListener('DOMContentLoaded', (event) => {
+            modal = $('#cancel-modal');
+            form = document.getElementById('registration-form');
+            modal.on('show.bs.modal', (event) => {
+                form.setAttribute('novalidate', 'novalidate');
+            });
+            modal.on('hide.bs.modal', (event) => {
+                form.removeAttribute('novalidate');
+            });
+        });
+    </script>
+    {% csrf_token %}
+    <h5 class="mb-3">Team Member {% if members is None %}1 (Registrant){% else %}{{ members|length|add:1 }}{% endif %}</h5>
+    <div class="form-group">
+        <label for="member-name-input">Member name:</label>
+        <input id="member-name-input" type="text" name="member_name" value="{{ form.member_name }}" class="form-control" placeholder="Enter name" required />
+    </div>
+    <div class="form-group">
+        <label for="email-input">Email:</label>
+        <input id="email-input" type="email" name="email" value="{{ form.email }}" class="form-control" placeholder="person@example.com" pattern="^[\w\.\+\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\.\-]+$" title="Please enter a valid email" required />
+    </div>
+    <div class="form-group">
+        <label for="mobile-input">Mobile number:</label>
+        <input id="mobile-input" type="text" name="mobile" value="{{ form.mobile }}" class="form-control" placeholder="Enter mobile number" pattern="^[6-9]\d{9}$" title="Please enter a valid Indian phone number" required />
+    </div>
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#cancel-modal">Cancel</button>
+    {% if members|length >= event.min_team_members %}
+    <input type="submit" class="btn btn-success" value="Save and Exit" name="save"/>
+    {% endif %}
+    <input type="submit" class="btn btn-primary" value="Add Member" name="add"/>
+</form>
+{% endblock form %}
+
+{% block item_table %}
+{% if members %}
+<table class="table table-bordered rounded" style="borded-collapse: separate; border-spacing: 0;">
+  <thead>
+    <tr>
+        <th scope="col">Sr. No.</th>
+        <th scope="col">Member name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Mobile number</th>
+    </tr>
+  </thead>
+  <tbody>
+        {% for member in members %}
+        <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td class="text-capitalize">{{ member.member_name }}</td>
+            <td>{{ member.email }}</td>
+            <td>{{ member.mobile }}</td>
+        </tr>
+        {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+{% endblock item_table %}

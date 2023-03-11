@@ -23,10 +23,9 @@ import forms.views as forms_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', pages_views.home_view, name='home'),
-    path('day1/', pages_views.day1_view, name='day1'),
-    path('day2/', pages_views.day2_view, name='day2'),
+    path('schedule/<int:day>/', pages_views.schedule_view, name='schedule'),
     path('updates_submit/', forms_views.updates_submit_view,
-         name="updates_submit"),
-    path('register/<slug:event_name>/', forms_views.register_view,
-         name="register")
+         name='updates_submit'),
+    path('register/<int:event_id>/', forms_views.register_view,
+         name='register')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
