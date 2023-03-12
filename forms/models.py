@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.core import validators
+from django.core.exceptions import ValidationError
 from django.db import models
 from tech_kaushalya import custom_fields
 
@@ -50,10 +51,15 @@ class Event(models.Model):
 class Team(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return str(self.id)
+
 
 class Member(models.Model):
-    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    team = models.ForeignKey(
+        Team, null=True, blank=True, on_delete=models.CASCADE)
     member_name = custom_fields.LowerCharField(max_length=50)
+    email = custom_fields.LowerEmailField()
     mobile = models.CharField(
         max_length=10,
         validators=[
@@ -66,8 +72,22 @@ class Member(models.Model):
             'max_length': 'Mobile number can have 10 digits at most.'
         }
     )
-    email = custom_fields.LowerEmailField()
-    is_registrant = models.BooleanField(default=False)
+    # university_name = models.CharField(max_length=80)
+    # course_name = models.CharField(max_length=80)
+    # semester = models.PositiveSmallIntegerField(validators=[
+    #     validators.MinValueValidator(
+    #         1, message='Semester must be between 1 to 12.'),
+    #     validators.MaxValueValidator(
+    #         12, message='Semester must be between 1 to 12.')
+    # ])
+    is_registrant = models.BooleanField()
+
+    def save(self, *args, **kwargs):
+        if self.team is None:
+            # make sure to handle ValidationError on save
+            raise ValidationError({'team': 'Team cannot be null.'})
+
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.member_name

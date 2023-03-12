@@ -9,8 +9,6 @@
 {% block form %}
 <form id="registration-form" method="post">
     {% csrf_token %}
-    <!-- cancel modal -->
-    {% include 'forms/cancel_modal.html' %}
     <div class="form-group">
         <label for="member-name-input">Member name</label>
         <input id="member-name-input" type="text" name="member_name" value="{{ form.member_name }}" class="form-control" placeholder="Enter name" required />
@@ -23,8 +21,7 @@
         <label for="mobile-input">Mobile number</label>
         <input id="mobile-input" type="text" name="mobile" value="{{ form.mobile }}" class="form-control" placeholder="Enter mobile number" pattern="^[6-9]\d{9}$" title="Please enter a valid Indian phone number" required />
     </div>
-    <!-- cancel button - shows cancel modal -->
-    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#cancel-modal">Cancel</button>
+    <a href="{% url 'schedule' event.event_day_num %}" class="btn btn-danger">Cancel</a>
     <input type="submit" class="btn btn-success" value="Register" name="register"/>
 </form>
 {% endblock form %}
