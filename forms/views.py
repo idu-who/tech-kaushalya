@@ -43,12 +43,11 @@ def register_view(request, event_id):
         event = Event.objects.get(id=event_id)
         context['event'] = event
     except ObjectDoesNotExist:
+        messages.error(request, 'Event does not exist.')
         return redirect('home')
 
-    if event.is_team_event:
-        template_name = 'forms/team_form.html'
-    else:
-        template_name = 'forms/individual_form.html'
+    template_name = ('forms/team_form.html' if event.is_team_event else
+                     'forms/individual_form.html')
 
     if request.method == 'POST':
         team_id = request.session.get('team_id')
@@ -116,6 +115,7 @@ def register_view(request, event_id):
 
                 member.full_clean()
                 member.save()
+                messages.success(request, 'Registered to event successfully.')
                 del context['form']
             except ValidationError as e:
                 if hasattr(e, 'error_dict'):
@@ -123,13 +123,31 @@ def register_view(request, event_id):
                 else:
                     context['errors'] = [('__all__', e)]
 
-            if request.POST.get('add') or context['errors']:
+            if request.POST.get('add') or context.get('errors'):
                 context['members'] = members
             else:
                 return redirect('home')
         else:
-            team = Team(event=event)
-            team.save()
+            team = Team.objects.get_or_create(event=event)
+            if not team_id and not request.POST.get('cancel'):
+                team = Team(event=event)
+                team.save()
+                request.session['team_id'] = team.id
+            else:
+                try:
+                    team = Team.objects.get(id=team_id)
+                except ObjectDoesNotExist:
+                    if team_id:
+                        del request.session['team_id']
+                    messages.error(request, 'Team does not exist.')
+                    return redirect('home')
+
+            if request.POST.get('cancel'):
+                team.delete()
+                if team_id:
+                    del request.session['team_id']
+                return redirect('home')
+
             member = Member(
                 team=team,
                 member_name=member_name_input,
@@ -161,6 +179,8 @@ def register_view(request, event_id):
 
                 member.full_clean()
                 member.save()
+                messages.success(request, 'Registered to event successfully.')
+                return redirect('home')
             except ValidationError as e:
                 team.delete()
                 if hasattr(e, 'error_dict'):

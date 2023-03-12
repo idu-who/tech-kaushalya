@@ -11,7 +11,7 @@ def home_view(request):
 
 
 def schedule_view(request, day):
-    date = settings.DAY1_DATE if day == 1 else settings.DAY2_DATE
+    date = settings.EVENT_DATES[day]
     events = Event.objects.filter(schedule__date=date).order_by('schedule')
     context = {
         'day': day,

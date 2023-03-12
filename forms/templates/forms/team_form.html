@@ -8,41 +8,11 @@
 
 {% block form %}
 <form id="registration-form" method="post">
-    <div class="modal fade" id="cancel-modal" tabindex="-1" role="dialog" aria-labelledby="cancel-modal" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Confirm Cancelation</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Are you sure you want to cancel registration?
-                    <br>
-                    All data will be lost.
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <input type="submit" class="btn btn-danger" value="Cancel" name="cancel"/>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script id="cancel-modal-script" type="text/javascript">
-        document.addEventListener('DOMContentLoaded', (event) => {
-            modal = $('#cancel-modal');
-            form = document.getElementById('registration-form');
-            modal.on('show.bs.modal', (event) => {
-                form.setAttribute('novalidate', 'novalidate');
-            });
-            modal.on('hide.bs.modal', (event) => {
-                form.removeAttribute('novalidate');
-            });
-        });
-    </script>
     {% csrf_token %}
-    <h5 class="mb-3">Team Member {% if members is None %}1 (Registrant){% else %}{{ members|length|add:1 }}{% endif %}</h5>
+    <!-- cancel modal - included here to submit form -->
+    {% include 'forms/cancel_modal.html' %}
+    {% with current_member_no=members|length|add:1 %}
+    <h5 class="mb-3">Team Member {{ current_member_no }}{% if current_member_no == 1 %} (You){% endif %}</h5>
     <div class="form-group">
         <label for="member-name-input">Member name:</label>
         <input id="member-name-input" type="text" name="member_name" value="{{ form.member_name }}" class="form-control" placeholder="Enter name" required />
@@ -55,11 +25,17 @@
         <label for="mobile-input">Mobile number:</label>
         <input id="mobile-input" type="text" name="mobile" value="{{ form.mobile }}" class="form-control" placeholder="Enter mobile number" pattern="^[6-9]\d{9}$" title="Please enter a valid Indian phone number" required />
     </div>
+     <!-- cancel button - shows cancel modal -->
     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#cancel-modal">Cancel</button>
-    {% if members|length >= event.min_team_members %}
+    {% if current_member_no < event.max_team_members %}
+    <!-- if not last member -->
+    <input type="submit" class="btn btn-primary" value="Add Member" name="add"/>
+    {% endif %}
+    {% if current_member_no >= event.min_team_members %}
+    <!-- if min_member or more -->
     <input type="submit" class="btn btn-success" value="Save and Exit" name="save"/>
     {% endif %}
-    <input type="submit" class="btn btn-primary" value="Add Member" name="add"/>
+    {% endwith %}
 </form>
 {% endblock form %}
 

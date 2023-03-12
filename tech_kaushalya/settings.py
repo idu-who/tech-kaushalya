@@ -14,8 +14,11 @@ from datetime import datetime
 from pathlib import Path
 
 # Project Constants
-DAY1_DATE = datetime(2023, 3, 20)
-DAY2_DATE = datetime(2023, 3, 21)
+EVENT_DATES = {
+    1: datetime(2023, 3, 20),
+    2: datetime(2023, 3, 21)
+}
+EVENT_DAY_NUMS = {date: day for day, date in EVENT_DATES.items()}
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent

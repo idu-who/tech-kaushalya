@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.core import validators
 from django.db import models
-from django.utils.text import slugify
 from tech_kaushalya import custom_fields
 
 # Create your models here.
@@ -40,7 +39,9 @@ class Event(models.Model):
 
     @property
     def event_day_num(self):
-        return 1 if self.schedule == settings.DAY1_DATE else 2
+        truncated_schedule = self.schedule.replace(
+            hour=0, minute=0, second=0, microsecond=0)
+        return settings.EVENT_DAY_NUMS[truncated_schedule]
 
     def __str__(self):
         return self.event_name
@@ -67,7 +68,6 @@ class Member(models.Model):
     )
     email = custom_fields.LowerEmailField()
     is_registrant = models.BooleanField(default=False)
-
 
     def __str__(self):
         return self.member_name
