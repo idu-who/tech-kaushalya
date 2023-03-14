@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.core import validators
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
 from django.db import models
 from tech_kaushalya import custom_fields
 
@@ -35,8 +35,12 @@ class Event(models.Model):
     schedule = models.DateTimeField()
     registration_fee = models.PositiveSmallIntegerField()
     is_team_event = models.BooleanField()
-    min_team_members = models.PositiveSmallIntegerField(default=1)
+    min_team_members = models.PositiveSmallIntegerField(default=1, validators=[
+        validators.MinValueValidator(
+            1, message='Minimum team members must be more than 0.')
+    ])
     max_team_members = models.PositiveSmallIntegerField(default=1)
+    is_registration_open = models.BooleanField(default=True)
 
     @property
     def event_day_num(self):
@@ -72,14 +76,9 @@ class Member(models.Model):
             'max_length': 'Mobile number can have 10 digits at most.'
         }
     )
-    # university_name = models.CharField(max_length=80)
-    # course_name = models.CharField(max_length=80)
-    # semester = models.PositiveSmallIntegerField(validators=[
-    #     validators.MinValueValidator(
-    #         1, message='Semester must be between 1 to 12.'),
-    #     validators.MaxValueValidator(
-    #         12, message='Semester must be between 1 to 12.')
-    # ])
+    university_name = models.CharField(max_length=60)
+    course_name = models.CharField(max_length=60)
+    address = models.CharField(max_length=60)
     is_registrant = models.BooleanField()
 
     def save(self, *args, **kwargs):

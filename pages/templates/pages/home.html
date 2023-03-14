@@ -16,8 +16,8 @@
         opacity: 1 !important;
     }
     .portrait-img {
-        max-height: 200px;
-        max-width: 200px;
+        max-height: 150px;
+        max-width: 150px;
         border-width: 2px !important;
     }
 {% endblock style %}
@@ -130,39 +130,32 @@
 {% endblock content %}
 {% block script %}
     {{ block.super }}
+    {% verbatim javascript %}
     // slick carousel
-    document.addEventListener('DOMContentLoaded', (event) => {
-        $('.slider').slick({
-            dots: true,
-            infinite: true,
-            speed: 300,
-            slidesToShow: 4,
-            slidesToScroll: 4,
-            adaptiveHeight: true,
-            responsive: [
-                {
-                    breakpoint: 992, // breakpoint-lg
-                    settings: {
-                        slidesToShow: 3,
-                        slidesToScroll: 3,
-                    }
-                },
-                {
-                    breakpoint: 768, // breakpoint-md
-                    settings: {
-                        slidesToShow: 2,
-                        slidesToScroll: 2
-                    }
-                },
-                {
-                    breakpoint: 576, // breakpoint-sm
-                    settings: {
-                        slidesToShow: 1,
-                        slidesToScroll: 1,
-                        arrows: false
-                    }
+    $('.slider').slick({
+        dots: true,
+        infinite: true,
+        speed: 300,
+        slidesToShow: 3,
+        slidesToScroll: 3,
+        adaptiveHeight: true,
+        responsive: [
+            {
+                breakpoint: 768, // breakpoint-md
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2
                 }
-            ]
-        });
-    })
+            },
+            {
+                breakpoint: 576, // breakpoint-sm
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    arrows: false
+                }
+            }
+        ]
+    });
+    {% endverbatim javascript %}
 {% endblock script %}

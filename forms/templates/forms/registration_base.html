@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load readable_name %}
 {% block content %}
 <div class="container-fluid">
     <div class="row justify-content-center">
@@ -21,7 +22,7 @@
                                 <li data-all="true"><b>{{ error }}</b></li>
                                 {% endfor %}
                                 {% else %}
-                                <li><b>{{ field.0 }}</b>
+                                <li data-field-name="{{ field.0 }}"><b>{{ field.0|readable_name }}</b>
                                     <ul>
                                     {% for error in field.1 %}
                                         <li>{{ error }}</li>
@@ -37,15 +38,14 @@
                     {% endif %}
                 </div>
             </div>
-            {% block item_table %}
-            {% endblock item_table %}
         </div>
     </div>
 </div>
 {% endblock content %}
+
 {% block script %}
-{{ block.super }}
-document.addEventListener('DOMContentLoaded', (event) => {
+    {{ block.super }}
+    {% verbatim javascript %}
     error_list = (typeof(error_list) == 'undefined')? document.getElementById('error-list') : error_list;
     if (error_list) {
         let fields = error_list.children;
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 break;
             }
             else {
-                let field_name = field.firstChild.textContent;
+                let field_name = field.dataset.fieldName;
                 let invalid_inputs = document.querySelectorAll(`input[name=${field_name}], select[name=${field_name}], textarea[name=${field_name}]`);
                 for (invalid_input of invalid_inputs) {
                     invalid_input.classList.add('is-invalid');
@@ -69,5 +69,5 @@ document.addEventListener('DOMContentLoaded', (event) => {
             }
         }
     }
-});
+    {% endverbatim javascript %}
 {% endblock script %}

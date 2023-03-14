@@ -1,5 +1,10 @@
 from django.contrib import messages
-from django.core.exceptions import ValidationError, ObjectDoesNotExist
+from django.core.exceptions import (
+    ValidationError,
+    ObjectDoesNotExist,
+    NON_FIELD_ERRORS
+)
+from django.db import DatabaseError, transaction
 from django.shortcuts import render, redirect
 
 from .models import (
@@ -17,7 +22,7 @@ def updates_submit_view(request):
     referer_url = request.META.get('HTTP_REFERER')
 
     if request.method == 'POST':
-        email_input = request.POST.get('email').strip()
+        email_input = request.POST.get('email', '').strip()
         try:
             updates_email = Updates_mail_list(email=email_input)
             updates_email.full_clean()
@@ -34,6 +39,24 @@ def updates_submit_view(request):
         return redirect(referer_url)
 
     return redirect('home')
+
+
+def is_duplicate(member, emails, mobiles):
+    error_dict = {}
+
+    if (member.email in emails):
+        error_dict['email'] = ('Email is a duplicate of other team member\'s '
+                               'email.')
+
+    if (member.mobile in mobiles):
+        error_dict['mobile'] = ('Mobile is a duplicate of other team member\'s'
+                                ' mobile.')
+
+    emails.append(member.email)
+    mobiles.append(member.mobile)
+
+    if error_dict:
+        raise ValidationError(error_dict)
 
 
 def is_member_registered(member, event):
@@ -60,23 +83,93 @@ def is_member_registered(member, event):
 
 
 def team_registration_handler(request, context, event):
-    pass
+    post_data = request.POST
+    field_names = {field.name for field in Member._meta.fields} - \
+        {'id', 'team', 'is_registrant'}
+    emails = []
+    mobiles = []
+    valid_members = []
+
+    for member_no in range(1, event.max_team_members+1):
+        name_template = f'member{member_no}_{{}}'
+        input_names = [name_template.format(field_name)
+                       for field_name in field_names]
+        name_map = dict(zip(field_names, input_names))
+
+        member_data = {field_name: post_data.get(input_name, '').strip()
+                       for field_name, input_name in name_map.items()}
+
+        if not any(member_data.values()):
+            continue
+
+        context.setdefault('form', {}).update({
+            member_no: member_data
+        })
+        print(context['form'])
+
+        member = Member(
+            **member_data,
+            is_registrant=not member_no-1
+        )
+
+        try:
+            member.full_clean()
+            is_duplicate(member, emails, mobiles)
+            is_member_registered(member, event)
+            valid_members.append(member)
+        except ValidationError as e:
+            if hasattr(e, 'error_dict'):
+                input_name_message_dict = {name_map[field_name]: error_list
+                                           for field_name, error_list
+                                           in e.message_dict.items()}
+                context.setdefault('errors', []).extend(
+                    list(input_name_message_dict.items()))
+            else:
+                context['errors'] = [(
+                    name_template.format(NON_FIELD_ERRORS), e)]
+
+    if len(valid_members) < event.min_team_members:
+        messages.error(request, 'Event requires minimum '
+                       f'{event.min_team_members} team members.')
+        return
+
+    try:
+        team = Team(event=event)
+        with transaction.atomic():
+            team.save()
+            for member in valid_members:
+                member.team = team
+                member.save()
+        del context['form']
+        messages.success(request, 'Registration successful.')
+    except (ValidationError, DatabaseError) as e:
+        msg = e.message if hasattr(e, 'message') else e.__cause__
+        messages.error(request, 'Error: '+msg)
 
 
 def individual_registration_handler(request, context, event):
-    member_name_input = request.POST.get('member_name').strip()
-    email_input = request.POST.get('email').strip()
-    mobile_input = request.POST.get('mobile').strip()
+    member_name_input = request.POST.get('member_name', '').strip()
+    email_input = request.POST.get('email', '').strip()
+    mobile_input = request.POST.get('mobile', '').strip()
+    university_name_input = request.POST.get('university_name', '').strip()
+    course_name_input = request.POST.get('course_name', '').strip()
+    address_input = request.POST.get('address', '').strip()
     context['form'] = {
         'member_name': member_name_input,
         'email': email_input,
-        'mobile': mobile_input
+        'mobile': mobile_input,
+        'university_name': university_name_input,
+        'course_name': course_name_input,
+        'address': address_input
     }
 
     member = Member(
         member_name=member_name_input,
         email=email_input,
         mobile=mobile_input,
+        university_name=university_name_input,
+        course_name=course_name_input,
+        address=address_input,
         is_registrant=True
     )
 
@@ -84,16 +177,19 @@ def individual_registration_handler(request, context, event):
         member.full_clean()
         is_member_registered(member, event)
         team = Team(event=event)
-        team.save()
-        member.team = team
-        member.save()
+        with transaction.atomic():
+            team.save()
+            member.team = team
+            member.save()
         del context['form']
         messages.success(request, 'Registration successful.')
     except ValidationError as e:
         if hasattr(e, 'error_dict'):
             context['errors'] = e.message_dict.items()
         else:
-            context['errors'] = [('__all__', e)]
+            context['errors'] = [(NON_FIELD_ERRORS, e)]
+    except DatabaseError as e:
+        messages.error(request, 'Error: '+e.__cause__)
 
 
 def register_view(request, event_id):
@@ -106,8 +202,20 @@ def register_view(request, event_id):
         messages.error(request, 'Event does not exist.')
         return redirect('home')
 
-    template_name = ('forms/team_form.html' if event.is_team_event else
-                     'forms/individual_form.html')
+    if not event.is_registration_open:
+        messages.info(request, f'Registrations for {event.event_name} are'
+                      ' closed.')
+        return redirect('home')
+
+    if event.is_team_event:
+        template_name = 'forms/team_registration.html'
+        context.update({
+            'required_member_nos': range(1, event.min_team_members+1),
+            'optional_member_nos': range(event.min_team_members+1,
+                                         event.max_team_members+1)
+        })
+    else:
+        template_name = 'forms/individual_registration.html'
 
     if request.method == 'POST':
         if event.is_team_event:

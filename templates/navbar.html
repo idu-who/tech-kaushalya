@@ -1,10 +1,12 @@
 {% load static %}
 <style id="navbar-style">
+    {% verbatim css %}
     /* changing nav active color to primary */
     .navbar-light .navbar-nav .active > .nav-link, .navbar-light .navbar-nav .nav-link.active, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .show > .nav-link {
         color: var(--primary);
         opacity: .9
     }
+    {% endverbatim css %}
 </style>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="{% url 'home' %}">
@@ -32,6 +34,7 @@
     </ul>
   </div>
 </nav>
+{% verbatim javascript %}
 <script id="navbar-script" type="text/javascript">
     // highlighting current url as active in navbar and dropdown
     document.addEventListener('DOMContentLoaded', (event) => {
@@ -48,7 +51,6 @@
             // finding nav-item with active_path and setting nav-item as active
             // clearing other active nav-items
             let link_element = nav_item.querySelector(`[href="${active_path}"]`);
-            console.log(link_element);
             if (link_element) {
                 nav_item.classList.add('active');
                 if (link_element.classList.contains('dropdown-item')) {
@@ -61,3 +63,4 @@
         }
     });
 </script>
+{% endverbatim javascript %}

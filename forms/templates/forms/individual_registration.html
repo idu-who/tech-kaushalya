@@ -1,0 +1,16 @@
+{% extends 'forms/registration_base.html' %}
+
+{% block title %}Tech Kaushalya | Registration{% endblock title %}
+
+{% block form_title %}
+{{ event.event_name|title }} Registration
+{% endblock form_title %}
+
+{% block form %}
+<form id="registration-form" method="post">
+    {% csrf_token %}
+    {% include 'forms/member_form.html' %}
+    <a href="{% url 'schedule' event.event_day_num %}" class="btn btn-danger">Cancel</a>
+    <input type="submit" class="btn btn-success" value="Register"/>
+</form>
+{% endblock form %}

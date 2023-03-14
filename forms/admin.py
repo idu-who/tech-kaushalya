@@ -6,7 +6,8 @@ from .models import *
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
     list_display = ('id', 'event_name', 'is_tech_event', 'schedule',
-                    'is_team_event', 'min_team_members', 'max_team_members')
+                    'is_team_event', 'min_team_members', 'max_team_members',
+                    'is_registration_open')
 
 @admin.register(Team)
 class TeamAdmin(admin.ModelAdmin):
