@@ -11,8 +11,7 @@ from .models import (
     Updates_mail_list,
     Event,
     Team,
-    Member,
-    Payment
+    Member
 )
 
 # Create your views here.
@@ -89,6 +88,11 @@ def team_registration_handler(request, context, event):
     emails = []
     mobiles = []
     valid_members = []
+    upi_reference_number_input = request.POST.get('upi_reference_number',
+                                                  '').strip()
+    context['form'] = {
+        'upi_reference_number': upi_reference_number_input
+    }
 
     for member_no in range(1, event.max_team_members+1):
         name_template = f'member{member_no}_{{}}'
@@ -102,10 +106,9 @@ def team_registration_handler(request, context, event):
         if not any(member_data.values()):
             continue
 
-        context.setdefault('form', {}).update({
+        context['form'].update({
             member_no: member_data
         })
-        print(context['form'])
 
         member = Member(
             **member_data,
@@ -129,22 +132,32 @@ def team_registration_handler(request, context, event):
                     name_template.format(NON_FIELD_ERRORS), e)]
 
     if len(valid_members) < event.min_team_members:
-        messages.error(request, 'Event requires minimum '
-                       f'{event.min_team_members} team members.')
+        msg_template = ('Event requires a minimum of {} team members.'
+                        ' You provided only {} valid team member\'s')
+        messages.error(request, msg_template.format(event.min_team_members,
+                                                    len(valid_members)))
         return
 
     try:
-        team = Team(event=event)
-        with transaction.atomic():
-            team.save()
-            for member in valid_members:
-                member.team = team
-                member.save()
+        team = Team(
+            event=event, upi_reference_number=upi_reference_number_input)
+        try:
+            with transaction.atomic():
+                team.full_clean()
+                team.save()
+                for member in valid_members:
+                    member.team = team
+                    member.save()
+        except ValidationError as e:
+            if hasattr(e, 'error_dict'):
+                context['errors'] = e.message_dict.items()
+            else:
+                context['errors'] = [(NON_FIELD_ERRORS, e)]
+            return
         del context['form']
         messages.success(request, 'Registration successful.')
-    except (ValidationError, DatabaseError) as e:
-        msg = e.message if hasattr(e, 'message') else e.__cause__
-        messages.error(request, 'Error: '+msg)
+    except DatabaseError as e:
+        messages.error(request, 'Error: '+e.__cause__)
 
 
 def individual_registration_handler(request, context, event):
@@ -153,14 +166,16 @@ def individual_registration_handler(request, context, event):
     mobile_input = request.POST.get('mobile', '').strip()
     university_name_input = request.POST.get('university_name', '').strip()
     course_name_input = request.POST.get('course_name', '').strip()
-    address_input = request.POST.get('address', '').strip()
+    residence_area_input = request.POST.get('residence_area', '').strip()
+    upi_reference_number_input = request.POST.get('upi_reference_number','').strip()
     context['form'] = {
         'member_name': member_name_input,
         'email': email_input,
         'mobile': mobile_input,
         'university_name': university_name_input,
         'course_name': course_name_input,
-        'address': address_input
+        'residence_area': residence_area_input,
+        'upi_reference_number': upi_reference_number_input
     }
 
     member = Member(
@@ -169,25 +184,29 @@ def individual_registration_handler(request, context, event):
         mobile=mobile_input,
         university_name=university_name_input,
         course_name=course_name_input,
-        address=address_input,
+        residence_area=residence_area_input,
         is_registrant=True
     )
 
     try:
-        member.full_clean()
-        is_member_registered(member, event)
-        team = Team(event=event)
-        with transaction.atomic():
-            team.save()
-            member.team = team
-            member.save()
+        try:
+            member.full_clean()
+            is_member_registered(member, event)
+            team = Team(
+                event=event, upi_reference_number=upi_reference_number_input)
+            with transaction.atomic():
+                team.full_clean()
+                team.save()
+                member.team = team
+                member.save()
+        except ValidationError as e:
+            if hasattr(e, 'error_dict'):
+                context['errors'] = e.message_dict.items()
+            else:
+                context['errors'] = [(NON_FIELD_ERRORS, e)]
+            return
         del context['form']
         messages.success(request, 'Registration successful.')
-    except ValidationError as e:
-        if hasattr(e, 'error_dict'):
-            context['errors'] = e.message_dict.items()
-        else:
-            context['errors'] = [(NON_FIELD_ERRORS, e)]
     except DatabaseError as e:
         messages.error(request, 'Error: '+e.__cause__)
 

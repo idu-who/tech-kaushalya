@@ -54,6 +54,20 @@ class Event(models.Model):
 
 class Team(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    upi_reference_number = models.CharField(
+        max_length=12,
+        unique=True,
+        validators=[
+            validators.RegexValidator(
+                regex=r'^\d{12}$',
+                message='Invalid UPI reference number.'
+            )
+        ],
+        error_messages={
+            'max_length': 'Invalid UPI reference number.',
+            'unique': 'Invalid UPI reference number.'
+        }
+    )
 
     def __str__(self):
         return str(self.id)
@@ -78,7 +92,7 @@ class Member(models.Model):
     )
     university_name = models.CharField(max_length=60)
     course_name = models.CharField(max_length=60)
-    address = models.CharField(max_length=60)
+    residence_area = models.CharField(max_length=60)
     is_registrant = models.BooleanField()
 
     def save(self, *args, **kwargs):
@@ -90,7 +104,3 @@ class Member(models.Model):
 
     def __str__(self):
         return self.member_name
-
-
-class Payment(models.Model):
-    team = models.ForeignKey(Team, on_delete=models.CASCADE)

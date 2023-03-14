@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', pages_views.home_view, name='home'),
     path('schedule/<int:day>/', pages_views.schedule_view, name='schedule'),
+    path('rulebook/', pages_views.rulebook_view, name='rulebook'),
     path('updates_submit/', forms_views.updates_submit_view,
          name='updates_submit'),
     path('register/<int:event_id>/', forms_views.register_view,

@@ -21,6 +21,6 @@
     </div>
 </div>
 <div class="form-group">
-    <label for="address-input">Address <span class="text-danger">*</span></label>
-    <input id="address-input" type="text" name="{% if member_no %}member{{ member_no }}_{% endif %}address" value="{% if member_no %}{{ member_form.address }}{% else %}{{ form.address }}{% endif %}" class="form-control" placeholder="Enter address" {% if optional %}disabled{% else %}required{% endif %} />
+    <label for="residence-area-input">Residence area <span class="text-danger">*</span></label>
+    <input id="residence-area-input" type="text" name="{% if member_no %}member{{ member_no }}_{% endif %}residence_area" value="{% if member_no %}{{ member_form.residence_area }}{% else %}{{ form.residence_area }}{% endif %}" class="form-control" placeholder="Enter residence area" {% if optional %}disabled{% else %}required{% endif %} />
 </div>

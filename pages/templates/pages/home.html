@@ -5,6 +5,7 @@
 
 {% block style %}
     {{ block.super }}
+    {% verbatim style %}
     .slick-prev::before, .slick-next::before {
         color: var(--primary) !important;
     }
@@ -20,12 +21,14 @@
         max-width: 150px;
         border-width: 2px !important;
     }
+    {% endverbatim style %}
 {% endblock style %}
 
 {% block head_extra %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" integrity="sha512-yHknP1/AwR+yx26cB1y0cjvQUMvEa2PFzt1c9LlS4pRQ5NOTZFWbhBig+X9G9eYW/8m0/4OXNx8pxJ6z57x0dw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" integrity="sha512-17EgCFERpgZKcm0j0fEq1YCJuyAWdz9KUtv1EjVuaOz8pDnh/0nZxmU6BBXwaaxqoi9PQXnRWqlcDB027hgv9A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js" integrity="sha512-XtmMtDEcNz2j7ekrtHvOVR4iwwaD6o/FUJe6+Zq+HgcCsk3kj4uSQQR8weQ2QVj1o0Pk6PwYLohm206ZzNfubg==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+    <script src="{% static 'js/slick_carousel_script.js' %}" charset="utf-8" defer></script>
 {% endblock head_extra %}
 
 {% block message %}
@@ -91,7 +94,7 @@
     <section id="organizers">
         <h2 class="mb-3">Meet the Organizers!</h2>
         <div class="row align-items-center justify-content-center">
-            <div class="col-sm-6 col-lg-3 py-2">
+            <div class="col-6 col-lg-3 py-2">
                 <img src="{% static 'images/organizers/portrait-1.jpg' %}" class="portrait-img border border-secondary rounded-circle">
                 <h4 class="mt-2">
                     Parth Sharda
@@ -99,7 +102,7 @@
                     <a href="tel:+919328382629" class="h6">+91 93283 82629</a>
                 </h4>
             </div>
-            <div class="col-sm-6 col-lg-3 py-2">
+            <div class="col-6 col-lg-3 py-2">
                 <img src="{% static 'images/organizers/portrait-2.png' %}" class="portrait-img border border-secondary rounded-circle">
                 <h4 class="mt-2">
                     Ruchit Prajapati
@@ -107,7 +110,7 @@
                     <a href="tel:+919512685134" class="h6">+91 95126 85134</a>
                 </h4>
             </div>
-            <div class="col-sm-6 col-lg-3 py-2">
+            <div class="col-6 col-lg-3 py-2">
                 <img src="{% static 'images/organizers/portrait-3.jpg' %}" class="portrait-img border border-secondary rounded-circle">
                 <h4 class="mt-2">
                     Nisarg Mistry
@@ -115,7 +118,7 @@
                     <a href="tel:+918320783266" class="h6">+91 83207 83266</a>
                 </h4>
             </div>
-            <div class="col-sm-6 col-lg-3 py-2">
+            <div class="col-6 col-lg-3 py-2">
                 <img src="{% static 'images/organizers/portrait-4.jpg' %}" class="portrait-img border border-secondary rounded-circle">
                 <h4 class="mt-2">
                     Parth Makwana
@@ -128,34 +131,3 @@
 </div>
 <hr class="m-3">
 {% endblock content %}
-{% block script %}
-    {{ block.super }}
-    {% verbatim javascript %}
-    // slick carousel
-    $('.slider').slick({
-        dots: true,
-        infinite: true,
-        speed: 300,
-        slidesToShow: 3,
-        slidesToScroll: 3,
-        adaptiveHeight: true,
-        responsive: [
-            {
-                breakpoint: 768, // breakpoint-md
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 2
-                }
-            },
-            {
-                breakpoint: 576, // breakpoint-sm
-                settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 1,
-                    arrows: false
-                }
-            }
-        ]
-    });
-    {% endverbatim javascript %}
-{% endblock script %}

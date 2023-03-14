@@ -11,7 +11,9 @@
     </title>
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/bootstrap-icons.css' %}">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato&family=Open+Sans">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
     <style>
         * {
             font-family: 'Lato', sans-serif;
@@ -43,7 +45,7 @@
     {% endblock footer %}
     <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', (event) => {
-            {% block script %}{% endblock script %}
+            {% block inline_script %}{% endblock inline_script %}
         });
     </script>
 </body>

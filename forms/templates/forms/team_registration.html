@@ -1,4 +1,5 @@
 {% extends 'forms/registration_base.html' %}
+{% load static %}
 {% load get %}
 
 {% block title %}Tech Kaushalya | Registration{% endblock title %}
@@ -8,166 +9,127 @@
 {% endblock form_title %}
 
 {% block style %}
-{{ block.super }}
-.card-header.disabled {
-    color: var(--secondary);
-    background-color: var(--white);
-}
-.toggle-button {
-    font-weight: inherit;
-    font-size: inherit;
-    line-height: inherit;
-    padding: 0;
-    text-align: left;
-}
+    {{ block.super }}
+    {% verbatim style %}
+    .card-header.disabled {
+        color: var(--secondary);
+        background-color: var(--white);
+    }
+    .toggle-button {
+        font-weight: inherit;
+        font-size: inherit;
+        line-height: inherit;
+        padding: 0;
+        text-align: left;
+    }
+    .selection-drag-disabled {
+        user-drag: none;
+        -webkit-user-drag: none;
+        user-select: none;
+        -ms-user-select: none;
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        -o-user-select: none;
+    }
+    #upi-id-badge {
+        /* horizontal alignment of element */
+        left: 0;
+        right: 0;
+        width: fit-content;
+        margin: 0 auto;
+        /* vertical alignment of element */
+        top: 50%;
+        margin-top: -20px;
+        /* selection enabled */
+        user-select: text;
+        -ms-user-select: text;
+        -moz-user-select: text;
+        -khtml-user-select: text;
+        -webkit-user-select: text;
+        -o-user-select: text;
+        /* shadow */
+        box-shadow: 0px 10px 15px -2px rgba(0,0,0,0.5);
+    }
+    {% endverbatim style %}
 {% endblock style %}
 
+{% block head_extra %}
+    {{ block.super }}
+    <script src="{% static 'js/team_registration_script.js' %}" charset="utf-8" defer></script>
+{% endblock head_extra %}
+
 {% block form %}
-<form id="registration-form" method="post" novalidate>
+<form id="registration-form" method="post">
     {% csrf_token %}
-    <div class="mb-3">
-        {% for member_no in required_member_nos %}
-        {% with member_form=form|get:member_no %}
-        <div class="card">
-            <button class="toggle-button btn invisible border-0" type="button" data-toggle="collapse" data-target="#member-form-{{ member_no }}" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="member-form-{{ member_no }}">
-                <div id="member-header-{{ member_no }}" class="card-header visible">
-                    Team Member {{ member_no }}{% if forloop.first %} (You){% endif %}
-                    <i class="toggle-icon float-right bi-{% if forloop.first %}dash{% else %}plus{% endif %}-lg"></i>
+    <fieldset>
+        <legend class="text-center h4">Member details</legend>
+        <div id="members-details">
+            {% for member_no in required_member_nos %}
+            {% with member_form=form|get:member_no %}
+            <div class="card">
+                <button class="toggle-button btn invisible border-0" type="button" data-toggle="collapse" data-target="#member-form-{{ member_no }}" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="member-form-{{ member_no }}">
+                    <div id="member-header-{{ member_no }}" class="card-header visible">
+                        Team Member {{ member_no }}{% if forloop.first %} (You){% endif %}
+                        <i class="toggle-icon float-right bi-{% if forloop.first %}dash{% else %}plus{% endif %}-lg"></i>
+                    </div>
+                </button>
+                <div id="member-form-{{ member_no }}" class="member-form card-body collapse {% if forloop.first %}show{% endif %}" data-member-no="{{ member_no }}">
+                    {% include 'forms/member_form.html' %}
                 </div>
-            </button>
-            <div id="member-form-{{ member_no }}" class="member-form card-body collapse {% if forloop.first %}show{% endif %}" data-member-no="{{ member_no }}">
-                {% include 'forms/member_form.html' %}
+            </div>
+            {% endwith %}
+            {% endfor %}
+            {% for member_no in optional_member_nos %}
+            {% with member_form=form|get:member_no %}
+            <div class="card">
+                <button class="toggle-button btn invisible border-0" type="button" data-target="#member-form-{{ member_no }}" aria-expanded="false" aria-controls="member-form-{{ member_no }}">
+                    <div id="member-header-{{ member_no }}" class="disabled card-header visible">
+                        Team Member {{ member_no }} (optional)
+                        <i class="toggle-icon float-right bi-plus-lg"></i>
+                    </div>
+                </button>
+                <div id="member-form-{{ member_no }}" class="member-form card-body collapse" data-member-no="{{ member_no }}">
+                    {% with optional=True  %}
+                    {% include 'forms/member_form.html' %}
+                    {% endwith %}
+                    <button class="cancel-member btn btn-danger" type="button" data-toggle="collapse" data-target="#member-form-{{ member_no }}" aria-expanded="false" aria-controls="member-form-{{ member_no }}">Cancel member</button>
+                </div>
+            </div>
+            {% endwith %}
+            {% endfor %}
+        </div>
+    </fieldset>
+    <hr class="m-3">
+    <fieldset class="mb-3">
+        <legend class="text-center h4">Payment details</legend>
+        <div class="d-flex flex-column justify-content-between align-items-center">
+            <div class="selection-drag-disabled position-relative my-2">
+                <img class="selection-drag-disabled w-100" src="{% static 'images/upi-qr.jpg' %}" style="max-width: 450px; max-height: 450px">
+                <span id="upi-id-badge" class="position-absolute badge badge-pill badge-success py-2 px-3" style="font-size: 1rem; cursor: pointer;">
+                    nisargmistry608@okicici<i class="bi-clipboard ml-2"></i>
+                </span>
             </div>
         </div>
-        {% endwith %}
-        {% endfor %}
-        {% for member_no in optional_member_nos %}
-        {% with member_form=form|get:member_no %}
-        <div class="card">
-            <button class="toggle-button btn invisible border-0" type="button" data-target="#member-form-{{ member_no }}" aria-expanded="false" aria-controls="member-form-{{ member_no }}">
-                <div id="member-header-{{ member_no }}" class="disabled card-header visible">
-                    Team Member {{ member_no }} (optional)
-                    <i class="toggle-icon float-right bi-plus-lg"></i>
-                </div>
-            </button>
-            <div id="member-form-{{ member_no }}" class="member-form card-body collapse" data-member-no="{{ member_no }}">
-                {% with optional=True  %}
-                {% include 'forms/member_form.html' %}
-                {% endwith %}
-                <button class="cancel-member btn btn-danger" type="button" data-toggle="collapse" data-target="#member-form-{{ member_no }}" aria-expanded="false" aria-controls="member-form-{{ member_no }}">Cancel member</button>
-            </div>
+        <div class="form-group">
+            <label for="upi-reference-number-input">UPI reference number <span class="text-danger">*</span></label>
+            <input id="upi-reference-number-input" type="text" name="upi_reference_number" value="{{ form.upi_reference_number }}" class="form-control" placeholder="Enter UPI reference number" pattern="^\d{12}$" title="UPI reference number must be a 12 digit number" required />
         </div>
-        {% endwith %}
-        {% endfor %}
-    </div>
+    </fieldset>
     <a href="{% url 'schedule' event.event_day_num %}" class="btn btn-danger">Cancel</a>
     <input type="submit" class="btn btn-success" value="Register Members"/>
 </form>
 {% endblock form %}
 
-{% block script %}
+{% block inline_script %}
     {{ block.super }}
     {% verbatim javascript %}
-    // toggle between expand and collapse icons
-    member_forms = $('.collapse.member-form');
-
-    function toggle_icon_handler(event) {
-        let member_form = event.target;
-        let member_no = member_form.dataset.memberNo;
-        let toggle_icon = document.querySelector(`#member-header-${member_no}>.toggle-icon`);
-        if (toggle_icon) {
-            if (toggle_icon.classList.contains('bi-plus-lg')) {
-                toggle_icon.classList.replace('bi-plus-lg', 'bi-dash-lg')
-            }
-            else {
-                toggle_icon.classList.replace('bi-dash-lg', 'bi-plus-lg')
-            }
-        }
-    }
-    member_forms.on('shown.bs.collapse', toggle_icon_handler);
-    member_forms.on('hidden.bs.collapse', toggle_icon_handler);
-
-    // handle disabled member
-    function prepare_next_disabled_header(current_disabled_header = undefined) {
-        if (typeof current_disabled_header === 'undefined') {
-            current_disabled_header = document.querySelector('.card-header.disabled');
-        }
-        if (current_disabled_header) {
-            current_disabled_header.onclick = disabled_click_handler;
-        }
-    }
-    prepare_next_disabled_header();
-
-    function disabled_click_handler(event) {
-        let target = event.target;
-        let header = target;
-
-        if (target.tagName == 'I') {
-            header = target.parentElement;
-        }
-
-        if (empty_fields()) {
-            window.alert('Please complete current members before adding additional members.');
-            return;
-        }
-        enable_member(header);
-    }
-
-    function empty_fields() {
-        let registration_form_inputs = document.querySelectorAll('#registration-form input:not(:disabled)');
-        let has_empty_fields = false;
-        for (let input of registration_form_inputs) {
-            let is_empty = input.validity.valueMissing;
-            if (is_empty) {
-                input.classList.add('is-invalid');
-                has_empty_fields = true;
-            }
-            else {
-                input.classList.remove('is-invalid');
-            }
-        }
-        return has_empty_fields;
-    }
-
-    function enable_member(header) {
-        let toggle_button = header.parentElement;
-        toggle_button.dataset.toggle = 'collapse';
-        header.classList.remove('disabled');
-        header.onclick = null;
-        prepare_next_disabled_header();
-        enable_inputs(toggle_button.dataset.target.substr(1));
-    }
-
-    function enable_inputs(member_form_id) {
-        let member_form_inputs = document.querySelectorAll(`#${member_form_id} input`);
-        for (let member_form_input of member_form_inputs) {
-            member_form_input.removeAttribute('disabled');
-            member_form_input.setAttribute('required', '');
-        }
-    }
-
-    // handle enabled member cancel
-    cancel_member_buttons = document.querySelectorAll('.cancel-member');
-    cancel_member_buttons.forEach((cancel_member_button) => {
-        cancel_member_button.onclick = disable_member;
-    });
-
-    function disable_member(event) {
-        let cancel_member_button = event.target;
-        let toggle_button = cancel_member_button.parentElement.previousElementSibling;
-        let header = toggle_button.firstElementChild;
-        toggle_button.dataset.toggle = '';
-        header.classList.add('disabled');
-        prepare_next_disabled_header(header);
-        disable_inputs(toggle_button.dataset.target.substr(1));
-    }
-
-    function disable_inputs(member_form_id) {
-        let member_form_inputs = document.querySelectorAll(`#${member_form_id} input`);
-        for (let member_form_input of member_form_inputs) {
-            member_form_input.setAttribute('disabled', '');
-            member_form_input.removeAttribute('required');
-        }
+    upi_id_badge = document.getElementById('upi-id-badge');
+    upi_id_badge.onclick = copy_to_clipboard
+    function copy_to_clipboard(event) {
+        console.log('copied');
+        navigator.clipboard.writeText('nisargmistry608@okicici');
+        window.alert('UPI id copied.');
     }
     {% endverbatim javascript %}
-{% endblock script %}
+{% endblock inline_script %}

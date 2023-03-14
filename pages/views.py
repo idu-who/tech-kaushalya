@@ -19,3 +19,7 @@ def schedule_view(request, day):
         'non_tech_events': events.filter(is_tech_event=False),
     }
     return render(request, 'pages/schedule.html', context)
+
+
+def rulebook_view(request):
+    return render(request, 'pages/rulebook.html')

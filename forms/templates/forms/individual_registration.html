@@ -1,6 +1,42 @@
 {% extends 'forms/registration_base.html' %}
+{% load static %}
 
 {% block title %}Tech Kaushalya | Registration{% endblock title %}
+
+{% block style %}
+    {{ block.super }}
+    {% verbatim style %}
+    .selection-drag-disabled {
+        user-drag: none;
+        -webkit-user-drag: none;
+        user-select: none;
+        -ms-user-select: none;
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        -o-user-select: none;
+    }
+    #upi-id-badge {
+        /* horizontal alignment of element */
+        left: 0;
+        right: 0;
+        width: fit-content;
+        margin: 0 auto;
+        /* vertical alignment of element */
+        top: 50%;
+        margin-top: -20px;
+        /* selection enabled */
+        user-select: text;
+        -ms-user-select: text;
+        -moz-user-select: text;
+        -khtml-user-select: text;
+        -webkit-user-select: text;
+        -o-user-select: text;
+        /* shadow */
+        box-shadow: 0px 10px 15px -2px rgba(0,0,0,0.5);
+    }
+    {% endverbatim style %}
+{% endblock style %}
 
 {% block form_title %}
 {{ event.event_name|title }} Registration
@@ -9,8 +45,40 @@
 {% block form %}
 <form id="registration-form" method="post">
     {% csrf_token %}
-    {% include 'forms/member_form.html' %}
+    <fieldset>
+        <legend class="text-center h4">Member details</legend>
+        {% include 'forms/member_form.html' %}
+    <fieldset>
+    <hr class="m-3">
+    <fieldset class="mb-3">
+        <legend class="text-center h4">Payment details</legend>
+        <div class="d-flex flex-column justify-content-between align-items-center">
+            <div class="selection-drag-disabled position-relative my-2">
+                <img class="selection-drag-disabled w-100" src="{% static 'images/upi-qr.jpg' %}" style="max-width: 450px; max-height: 450px">
+                <span id="upi-id-badge" class="position-absolute badge badge-pill badge-success py-2 px-3" style="font-size: 1rem; cursor: pointer;">
+                    nisargmistry608@okicici<i class="bi-clipboard ml-2"></i>
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="upi-reference-number-input">UPI reference number <span class="text-danger">*</span></label>
+            <input id="upi-reference-number-input" type="text" name="upi_reference_number" value="{{ form.upi_reference_number }}" class="form-control" placeholder="Enter UPI reference number" pattern="^\d{12}$" title="UPI reference number must be a 12 digit number" required />
+        </div>
+    </fieldset>
     <a href="{% url 'schedule' event.event_day_num %}" class="btn btn-danger">Cancel</a>
     <input type="submit" class="btn btn-success" value="Register"/>
 </form>
 {% endblock form %}
+
+{% block inline_script %}
+    {{ block.super }}
+    {% verbatim javascript %}
+    upi_id_badge = document.getElementById('upi-id-badge');
+    upi_id_badge.onclick = copy_to_clipboard
+    function copy_to_clipboard(event) {
+        console.log('copied');
+        navigator.clipboard.writeText('nisargmistry608@okicici');
+        window.alert('UPI id copied.');
+    }
+    {% endverbatim javascript %}
+{% endblock inline_script %}
