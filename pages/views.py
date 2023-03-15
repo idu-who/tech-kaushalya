@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.shortcuts import render
+
 from forms.models import Event
 
 # Create your views here.

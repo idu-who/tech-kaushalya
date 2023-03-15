@@ -8,11 +8,13 @@
 {% endblock message %}
 
 {% block content %}
-<hr class="m-3">
-    <div class="container-fluid text-center">
-        <embed id="rulebook-pdf" src="{% static 'test_pdf.pdf' %}#view=FitV" style="width: 100%; min-height: 100vh;" type="application/pdf">
-            Error failed to display PDF.
-        </embed>
-    </div>
-<hr class="m-3">
+<hr class="my-3 invisible">
+<div class="container-fluid text-center position-relative">
+    <embed src="{% static 'test_pdf.pdf' %}#view=FitV" style="width: 100%; min-height: 100vh;" type="application/pdf">
+    </embed>
+    <h3 class="position-absolute w-100 mt-2 text-danger" style="top: 0; left: 0; z-index: -1;">
+        Could not load pdf.<i class="bi-file-earmark-x ml-2"></i>
+    </h3>
+</div>
+<hr class="my-3 invisible">
 {% endblock content %}

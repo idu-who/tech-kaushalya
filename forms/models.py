@@ -1,7 +1,8 @@
 from django.conf import settings
 from django.core import validators
-from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
+from django.core.exceptions import ValidationError
 from django.db import models
+
 from tech_kaushalya import custom_fields
 
 # Create your models here.

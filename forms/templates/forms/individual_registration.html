@@ -1,8 +1,6 @@
 {% extends 'forms/registration_base.html' %}
 {% load static %}
 
-{% block title %}Tech Kaushalya | Registration{% endblock title %}
-
 {% block style %}
     {{ block.super }}
     {% verbatim style %}
@@ -62,7 +60,7 @@
         </div>
         <div class="form-group">
             <label for="upi-reference-number-input">UPI reference number <span class="text-danger">*</span></label>
-            <input id="upi-reference-number-input" type="text" name="upi_reference_number" value="{{ form.upi_reference_number }}" class="form-control" placeholder="Enter UPI reference number" pattern="^\d{12}$" title="UPI reference number must be a 12 digit number" required />
+            <input id="upi-reference-number-input" type="text" inputmode="numeric" name="upi_reference_number" value="{{ form.upi_reference_number }}" class="form-control" placeholder="Enter UPI reference number" pattern="^\d{12}$" title="UPI reference number must be a 12 digit number" required />
         </div>
     </fieldset>
     <a href="{% url 'schedule' event.event_day_num %}" class="btn btn-danger">Cancel</a>

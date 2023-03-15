@@ -8,14 +8,14 @@
 </div>
 <div class="form-group">
     <label for="mobile-input">Mobile number <span class="text-danger">*</span></label>
-    <input id="mobile-input" type="text" name="{% if member_no %}member{{ member_no }}_{% endif %}mobile" value="{% if member_no %}{{ member_form.mobile }}{% else %}{{ form.mobile }}{% endif %}" class="form-control" placeholder="Enter mobile number" pattern="^[6-9]\d{9}$" title="Please enter a valid Indian phone number" {% if optional %}disabled{% else %}required{% endif %} />
+    <input id="mobile-input" type="text" inputmode="numeric" name="{% if member_no %}member{{ member_no }}_{% endif %}mobile" value="{% if member_no %}{{ member_form.mobile }}{% else %}{{ form.mobile }}{% endif %}" class="form-control" placeholder="Enter mobile number" pattern="^[6-9]\d{9}$" title="Please enter a valid Indian phone number" {% if optional %}disabled{% else %}required{% endif %} />
 </div>
 <div class="form-group form-row">
-    <div class="col">
+    <div class="col d-flex flex-column justify-content-between">
         <label for="university-input">University/College name <span class="text-danger">*</span></label>
         <input id="university-input" type="text" name="{% if member_no %}member{{ member_no }}_{% endif %}university_name" value="{% if member_no %}{{ member_form.university_name }}{% else %}{{ form.university_name }}{% endif %}" class="form-control" placeholder="Enter univeristy or college name" {% if optional %}disabled{% else %}required{% endif %}/>
     </div>
-    <div class="col">
+    <div class="col d-flex flex-column justify-content-between">
         <label for="course-name">Course name <span class="text-danger">*</span></label>
         <input id="course-name" type="text" name="{% if member_no %}member{{ member_no }}_{% endif %}course_name" value="{% if member_no %}{{ member_form.course_name }}{% else %}{{ form.course_name }}{% endif %}" class="form-control" placeholder="Enter course name" {% if optional %}disabled{% else %}required{% endif %} />
     </div>
